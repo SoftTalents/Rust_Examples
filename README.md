@@ -12,4 +12,7 @@ You can set environment variable for search.
 ```sh
 IGNORE_CASE=1 cargo run -- to poem.txt
 ```
-
+To output application result to specific file, run the following command.
+```sh
+cargo run > output.txt
+```
