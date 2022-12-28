@@ -8,4 +8,8 @@ To test, run the below.
 ```sh
 cargo test
 ```
+You can set environment variable for search.
+```sh
+IGNORE_CASE=1 cargo run -- to poem.txt
+```
 
