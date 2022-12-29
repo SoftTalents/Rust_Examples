@@ -1,5 +1,5 @@
 use add_one;
-use std::ops::Deref;
+use std::{ops::Deref, rc::Rc};
 
 struct MyBox<T>(T);
 
@@ -31,6 +31,13 @@ fn hello(name: &str) {
     println!("Hello, {name}");
 }
 
+enum List {
+    Cons(i32, Rc<List>),
+    Nil,
+}
+
+use crate::List::{Cons, Nil};
+
 fn main() {
     let num = 10;
     println!("Hello, world! {num} plus one is {}!", add_one::add_one(num));
@@ -52,4 +59,15 @@ fn main() {
     println!("CustomSmartPointer created.");
     drop(c);
     println!("CustomSmartPointer dropped before the end of main.");
+
+    let e = Rc::new(Cons(5, Rc::new(Cons(10, Rc::new(Nil)))));
+    println!("count after creating a = {}", Rc::strong_count(&e));
+    let f = Cons(3, Rc::clone(&e));
+    println!("count after creating b = {}", Rc::strong_count(&e));
+    {
+        let g = Cons(4, Rc::clone(&e));
+        println!("count after creating c = {}", Rc::strong_count(&e));
+    }
+    println!("count after g goes out of scope = {}", Rc::strong_count(&e));
+
 }
