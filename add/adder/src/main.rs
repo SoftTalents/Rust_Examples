@@ -17,6 +17,16 @@ impl<T> Deref for MyBox<T> {
     }
 }
 
+struct CustomSmartPointer {
+    data: String,
+}
+
+impl Drop for CustomSmartPointer {
+    fn drop(&mut self) {
+        println!("Dropping CustomSmartPointer with data `{}`!", self.data);
+    }
+}
+
 fn hello(name: &str) {
     println!("Hello, {name}");
 }
@@ -30,5 +40,14 @@ fn main() {
 
     assert_eq!(5, *y);
     let m = MyBox::new(String::from("Rust"));
-    hello(&m);
+    hello(&m); // it's enable because of dereference coercion.
+
+    let c = CustomSmartPointer {
+        data: String::from("my stuff"),
+    };
+
+    let d = CustomSmartPointer {
+        data: String::from("other stuff"),
+    };
+    println!("CustomSmartPointer created.");
 }
