@@ -13,6 +13,15 @@ fn main() {
         println!("number {} from the main thread!", i);
         thread::sleep(Duration::from_millis(1));
     }
+    
+    let v = vec![1,2,3];
+
+    let handle2 = thread::spawn(move || {
+        println!("Here's a vector: {:?}", v);
+    });
+
     handle.join().unwrap(); // block the currently running thread until the handled thread terminates.
+    handle2.join().unwrap();
+
     println!("Hello, world!");
 }
