@@ -1,5 +1,6 @@
 use std::thread;
 use std::time::Duration;
+use std::sync::mpsc;
 
 fn main() {
     let handle = thread::spawn(|| {
@@ -22,6 +23,16 @@ fn main() {
 
     handle.join().unwrap(); // block the currently running thread until the handled thread terminates.
     handle2.join().unwrap();
+
+    let (tx, rx) = mpsc::channel();
+
+    thread::spawn(move || {
+        let val = String::from("Hi");
+        tx.send(val).unwrap();
+    });
+
+    let received = rx.recv().unwrap(); // block the main thread while waiting for a message
+    println!("Got {received}");
 
     println!("Hello, world!");
 }
